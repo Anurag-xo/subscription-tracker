@@ -37,6 +37,7 @@ const subscriptionSchema = new mongoose.Schema(
         "other",
       ],
       required: true,
+      set: (value) => value.toLowerCase(),
     },
     paymentMethod: {
       type: String,
@@ -68,7 +69,7 @@ const subscriptionSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      // required: true,
       index: true,
     },
   },
