@@ -16,6 +16,7 @@
     "debug": "~2.6.9",
     "dotenv": "^17.2.3",
     "express": "~4.16.1",
+    "express-validator": "^7.3.0",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.20.0",
