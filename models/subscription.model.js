@@ -11,7 +11,7 @@ const subscriptionSchema = new mongoose.Schema(
     },
     price: {
       type: Number,
-      require: [true, "Subscription price is required"],
+      required: [true, "Subscription price is required"],
       min: [0, "Price must be greater than 0"],
       max: [1000, "Price must be smaller than 1000"],
     },
@@ -100,6 +100,7 @@ subscriptionSchema.pre("save", function (next) {
   next();
 });
 
-const Subscription = mongoose.model("Subscription", subscriptionSchema);
+subscriptionSchema.index({ user: 1, status: 1 });
 
+const Subscription = mongoose.model("Subscription", subscriptionSchema);
 export default Subscription;
