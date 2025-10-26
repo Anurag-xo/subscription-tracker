@@ -73,7 +73,7 @@ export const signIn = async (req, res, next) => {
 
     if (!isPasswordValid) {
       const error = new Error("Invalid password");
-      error.statuscode = 401;
+      error.statusCode = 401;
       throw error;
     }
 
@@ -94,4 +94,6 @@ export const signIn = async (req, res, next) => {
   }
 };
 
-export const signOut = async (req, res, next) => {};
+export const signOut = async (req, res, next) => {
+  res.status(200).json({ success: true, message: "Signed out successfully" });
+};
