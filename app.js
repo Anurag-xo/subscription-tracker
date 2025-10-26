@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 
 import { PORT } from "./config/env.js";
 
+import helmet from "helmet";
 import userRouter from "./routes/user.routes.js";
 import authRouter from "./routes/auth.routes.js";
 import subscriptionRouter from "./routes/subscription.routes.js";
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(arcjetMiddlware);
+app.use(helmet());
 
 //middlewares
 app.use("/api/v1/auth", authRouter);
