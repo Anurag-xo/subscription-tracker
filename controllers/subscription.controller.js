@@ -44,3 +44,22 @@ export const getUserSubscriptions = async (req, res, next) => {
     next(e);
   }
 };
+
+export const cancelSubscription = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const subscription = await Subscription.findByIdAndUpdate(
+      id,
+      { status: "cancelled" },
+      { new: true },
+    );
+
+    if (subscription.workflowRunId) {
+      await workflowClient.cancel(subscription.workflowRunId);
+    }
+
+    res.json({ success: true, subscription });
+  } catch (e) {
+    next(e);
+  }
+};
