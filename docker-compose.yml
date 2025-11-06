@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_URI=mongodb://mongo:27017/subscription_tracker
+      - JWT_SECRET=dev-secret
+      - EMAIL_PASSWORD=dev-pass
+      - ARCJET_KEY=dev-key
+      - QSTASH_TOKEN=dev-token
+      - QSTASH_URL=http://qstash:8000
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
