@@ -2,6 +2,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import process from "process";
+import mongoose from "mongoose";
 
 import { PORT } from "./config/env.js";
 import userRouter from "./routes/user.routes.js";
@@ -27,8 +28,18 @@ app.use("/api/v1/subscriptions", subscriptionRouter);
 app.use("/api/v1/workflows", workflowRouter);
 
 // HEALTH CHECK
-app.get("/health", (req, res) => {
-  res.json({ status: "OK", uptime: process.uptime() });
+app.get("/health", async (req, res) => {
+  try {
+    await mongoose.connection.db.admin().ping();
+    res.json({
+      status: "OK",
+      uptime: process.uptime(),
+      db: "Connected",
+      timestamp: new Date().toISOString(),
+    });
+  } catch (err) {
+    res.status(500).json({ status: "DB_DOWN", error: err.message });
+  }
 });
 
 app.get("/", (req, res) => {
