@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subscription-tracker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: subscription-tracker
+  template:
+    metadata:
+      labels:
+        app: subscription-tracker
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/anurag-xo/subscription-tracker:main
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: app-secrets
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 10
