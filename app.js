@@ -51,7 +51,7 @@ app.use(errorMiddleware);
 // GLOBAL ERROR HANDLERS
 process.on("uncaughtException", (err) => {
   console.error("UNCAUGHT EXCEPTION! Shutting down...");
-  console.errorr(err);
+  console.error(err);
   process.exit(1);
 });
 
