@@ -72,6 +72,10 @@ const subscriptionSchema = new mongoose.Schema(
       // required: true,
       index: true,
     },
+    workflowRunId: {
+      type: String,
+      sparse: true, // allows null/undefined
+    },
   },
   { timestamps: true },
 );
