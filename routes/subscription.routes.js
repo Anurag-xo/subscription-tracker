@@ -3,36 +3,44 @@ import authorize from "../middlewares/auth.middleware.js";
 import {
   createSubscription,
   getUserSubscriptions,
+  getSubscriptionById,
+  updateSubscription,
+  deleteSubscription,
+  cancelSubscription,
+  getUpcomingRenewals,
 } from "../controllers/subscription.controller.js";
 
 const subscriptionRouter = Router();
 
+// Public route: Get all subscriptions (optional — usually not exposed in production)
+// Consider removing or restricting this in production
 subscriptionRouter.get("/", (req, res) =>
-  res.send({ title: "GET all subscriptions" }),
+  res.status(405).json({ success: false, message: "Method not allowed" }),
 );
 
-subscriptionRouter.get("/:id", (req, res) =>
-  res.send({ title: "GET subscription details" }),
-);
+// Protected: Get a single subscription by ID (user must own it)
+subscriptionRouter.get("/:id", authorize, getSubscriptionById);
 
+// Protected: Create new subscription (user must be authenticated)
 subscriptionRouter.post("/", authorize, createSubscription);
 
-subscriptionRouter.put("/:id", (req, res) =>
-  res.send({ title: "UPDATE subscription" }),
-);
+// Protected: Update subscription (user must own it)
+subscriptionRouter.put("/:id", authorize, updateSubscription);
 
-subscriptionRouter.delete("/:id", (req, res) =>
-  res.send({ title: "DELETE subscription" }),
-);
+// Protected: Delete subscription (user must own it)
+subscriptionRouter.delete("/:id", authorize, deleteSubscription);
 
+// Protected: Get all subscriptions for a user (must be the same user)
 subscriptionRouter.get("/user/:id", authorize, getUserSubscriptions);
 
-subscriptionRouter.put("/:id/cancel", (req, res) =>
-  res.send({ title: "CANCEL subscription" }),
-);
+// Protected: Cancel a subscription (user must own it)
+subscriptionRouter.put("/:id/cancel", authorize, cancelSubscription);
 
-subscriptionRouter.get("/:id/upcoming-renewals", (req, res) =>
-  res.send({ title: "GET upcoming renewals" }),
+// Protected: Get upcoming renewals (user must own it)
+subscriptionRouter.get(
+  "/:id/upcoming-renewals",
+  authorize,
+  getUpcomingRenewals,
 );
 
 export default subscriptionRouter;
