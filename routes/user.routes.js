@@ -1,18 +1,33 @@
 import { Router } from "express";
-
 import authorize from "../middlewares/auth.middleware.js";
-import { getUser, getUsers } from "../controllers/user.controller.js";
+import {
+  getUser,
+  getUsers,
+  updateUser,
+  deleteUser,
+} from "../controllers/user.controller.js";
 
 const userRouter = Router();
 
-userRouter.get("/", getUsers);
+userRouter.get("/", (req, res) =>
+  res.status(405).json({ success: false, message: "Method not allowed" }),
+);
+
+userRouter.get("/me", authorize, (req, res) => {
+  req.params.id = req.user._id;
+  return getUser(req, res);
+});
 
 userRouter.get("/:id", authorize, getUser);
 
-userRouter.post("/", (req, res) => res.send({ title: "CREATE all users" }));
+userRouter.post("/", (req, res) =>
+  res
+    .status(405)
+    .json({ success: false, message: "Use /auth/sign-up to create a user" }),
+);
 
-userRouter.put("/:id", (req, res) => res.send({ title: "UPDATE user" }));
+userRouter.put("/:id", authorize, updateUser);
 
-userRouter.delete("/:id", (req, res) => res.send({ title: "DELETE user" }));
+userRouter.delete("/:id", authorize, deleteUser);
 
 export default userRouter;
