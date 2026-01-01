@@ -1,18 +1,10 @@
 import User from "../models/user.model.js";
 import Subscription from "../models/subscription.model.js";
 import { workflowClient } from "../config/upstash.js";
-import bcrypt from "bcryptjs";
-
-export const getUsers = async (req, res, next) => {
-  const error = new Error("Access denied");
-  error.statusCode = 403;
-  next(error);
-};
 
 export const getUser = async (req, res, next) => {
   try {
     const userId = req.params.id;
-
     if (req.user._id.toString() !== userId.toString()) {
       const error = new Error("Not authorized to access this user");
       error.statusCode = 403;
@@ -46,7 +38,7 @@ export const updateUser = async (req, res, next) => {
     if (email) {
       const existingUser = await User.findOne({
         email,
-        _id: { $ne: id }, // exclude current user
+        _id: { $ne: id },
       });
       if (existingUser) {
         const error = new Error("Email is already in use");
@@ -76,11 +68,9 @@ export const updateUser = async (req, res, next) => {
   }
 };
 
-// DELETE /api/v1/users/:id — delete own account
 export const deleteUser = async (req, res, next) => {
   try {
     const { id } = req.params;
-
     if (req.user._id.toString() !== id.toString()) {
       const error = new Error("Not authorized");
       error.statusCode = 403;
