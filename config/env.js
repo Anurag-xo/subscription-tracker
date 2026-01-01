@@ -1,4 +1,5 @@
 import { config } from "dotenv";
+import process from "proecess";
 
 config({ path: `.env.${process.env.NODE_ENV || "development"}.local` });
 
@@ -13,6 +14,7 @@ const {
   ARCJET_KEY,
   QSTASH_URL,
   QSTASH_TOKEN,
+  EMAIL_USER,
   EMAIL_PASSWORD,
 } = process.env;
 
@@ -43,8 +45,10 @@ export {
   DB_URI,
   JWT_SECRET,
   JWT_EXPIRES_IN,
+  ARCJET_ENV,
   ARCJET_KEY,
   QSTASH_URL,
   QSTASH_TOKEN,
+  EMAIL_USER,
   EMAIL_PASSWORD,
 };
